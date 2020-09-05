@@ -5,9 +5,12 @@
 # @File: bilstm_crf_train.py
 
 import pickle
-import pdb
+import torch
+import torch.optim as optim
+from models.BiLSTM_CRF import BiLSTM_CRF
+from models.resultCal import calculate
 
-with open('../data/Bosondata.pkl', 'rb') as inp:
+with open('../ACEdata.pkl', 'rb') as inp:
     word2id = pickle.load(inp)
     id2word = pickle.load(inp)
     tag2id = pickle.load(inp)
@@ -18,17 +21,11 @@ with open('../data/Bosondata.pkl', 'rb') as inp:
     y_test = pickle.load(inp)
     x_valid = pickle.load(inp)
     y_valid = pickle.load(inp)
+print(x_train)
+print(y_train)
 print("train len:", len(x_train))
 print("test len:", len(x_test))
 print("valid len", len(x_valid))
-
-import torch
-import torch.autograd as autograd
-import torch.nn as nn
-import torch.optim as optim
-import codecs
-from models.BiLSTM_CRF import BiLSTM_CRF
-from models.resultCal import calculate
 
 #############
 START_TAG = "<START>"
@@ -57,7 +54,7 @@ for epoch in range(EPOCHS):
 
         loss.backward()
         optimizer.step()
-        if index % 300 == 0:
+        if index % 1000 == 0:
             print("epoch", epoch, "index", index)
     entityres = []
     entityall = []
@@ -71,13 +68,13 @@ for epoch in range(EPOCHS):
         zhun = float(len(jiaoji)) / len(entityres)
         zhao = float(len(jiaoji)) / len(entityall)
         print("test:")
-        print("zhun:", zhun)
-        print("zhao:", zhao)
-        print("f:", (2 * zhun * zhao) / (zhun + zhao))
+        print("准确率:", zhun)
+        print("召回率:", zhao)
+        print("F-score:", (2 * zhun * zhao) / (zhun + zhao))
     else:
-        print("zhun:", 0)
+        print("准确率:", 0)
 
-    path_name = "./model/model" + str(epoch) + ".pkl"
-    print(path_name)
-    torch.save(model, path_name)
-    print("model has been saved")
+    # path_name = "./model/model" + str(epoch) + ".pkl"
+    # print(path_name)
+    # torch.save(model, path_name)
+    # print("model has been saved")
