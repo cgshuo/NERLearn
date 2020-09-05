@@ -9,7 +9,9 @@ import codecs
 
 def calculate(x, y, id2word, id2tag, res=[]):
     entity = []
+    x=x.numpy()
     for j in range(len(x)):
+
         if x[j] == 0 or y[j] == 0:
             continue
         if id2tag[y[j]][0] == 'B':
