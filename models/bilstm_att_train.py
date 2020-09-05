@@ -11,7 +11,7 @@ import sys
 import codecs
 
 # with open('./data/engdata_train.pkl', 'rb') as inp:
-with open('./data/people_relation_train.pkl', 'rb') as inp:
+with open('../data/people_relation_train.pkl', 'rb') as inp:
     word2id = pickle.load(inp)
     id2word = pickle.load(inp)
     relation2id = pickle.load(inp)
